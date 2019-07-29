@@ -17,6 +17,7 @@ namespace SimpleMusicCore
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/Download");
             Console.OutputEncoding = Encoding.UTF8;
             Console.Title = "SimpleMusicCore";
+            GetVk();
             while (true)
             {
                 Console.Clear();

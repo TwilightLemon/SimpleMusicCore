@@ -9,7 +9,7 @@ namespace SimpleMusicCore
     /// </summary>
     public class HttpHelper
     {
-                public static bool HttpDownload(string url, string path)
+       public static bool HttpDownload(string url, string path)
         {
             string tempPath = Path.GetDirectoryName(path) + @"\temp";
             Directory.CreateDirectory(tempPath);
