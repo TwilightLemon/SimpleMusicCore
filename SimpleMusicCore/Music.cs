@@ -33,9 +33,16 @@ namespace SimpleMusicCore
             StreamReader sr = new StreamReader(o.GetResponseStream(), Encoding.UTF8);
             var st = await sr.ReadToEndAsync();
             sr.Dispose();
-            string vk = Text(st, "http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400000By9MX0yKL2c.m4a", "&fromtag=38", 0);
-            var id = JObject.Parse(await GetWebDatacAsync($"https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid={mid}&platform=yqq&format=json"))["data"][0]["file"]["media_mid"].ToString();
-            return $"http://aqqmusic.tc.qq.com/amobile.music.tc.qq.com/C400{id}.m4a" + vk + "&fromtag=98";
+            string vk = Text(st, "http://apd-vlive.apdcdn.tc.qq.com/amobile.music.tc.qq.com/C400000By9MX0yKL2c.m4a", "&fromtag=38", 0);
+            if (string.IsNullOrEmpty(vk))
+            {
+                Console.WriteLine("Vkey被吃掉了!!");
+                await Task.Delay(500);
+                Console.WriteLine("重连...");
+                return await GetVk(mid);
+            }
+            var mids = JObject.Parse(await GetWebDatacAsync($"https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid={mid}&platform=yqq&format=json"))["data"][0]["file"]["media_mid"].ToString();
+            return $"http://musichy.tc.qq.com/amobile.music.tc.qq.com/C400{mids}.m4a" + vk + "&fromtag=98";
         }
         public static async void GetUri(Music m,bool needlyric)
         {
