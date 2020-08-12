@@ -33,7 +33,7 @@ namespace SimpleMusicCore
             StreamReader sr = new StreamReader(o.GetResponseStream(), Encoding.UTF8);
             var st = await sr.ReadToEndAsync();
             sr.Dispose();
-            string vk = Text(st, "http://apd-vlive.apdcdn.tc.qq.com/amobile.music.tc.qq.com/C400000By9MX0yKL2c.m4a", "&fromtag=38", 0);
+            string vk = Text(st, "amobile.music.tc.qq.com/C400000By9MX0yKL2c.m4a", "&fromtag=38", 0);
             if (string.IsNullOrEmpty(vk))
             {
                 Console.WriteLine("Vkey被吃掉了!!");
@@ -48,10 +48,11 @@ namespace SimpleMusicCore
         {
             string uri = await GetVk(m.MusicID);
             string name = (m.MusicName + " - " + m.Singer).Replace("\\", "-").Replace("?", "").Replace("/", "").Replace(":", "").Replace("*", "").Replace("\"", "").Replace("<", "").Replace(">", "").Replace("|", "");
-            HttpDownload(uri, Directory.GetCurrentDirectory() + "/Download/" + name + ".mp3");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Download", name + ".mp3");
+            HttpDownload(uri,path);
             if (needlyric)
                 GetLyric(m.MusicID, name);
-            Console.WriteLine("下载完成   文件于:" + Directory.GetCurrentDirectory() + "/Download/" + name + ".mp3");
+            Console.WriteLine("下载完成   文件于:" +path);
         }
         public static async Task<List<Music>> GetGDByIdAsync(string id) {
             if (id == "")

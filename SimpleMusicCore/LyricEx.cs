@@ -58,7 +58,7 @@ namespace SimpleMusicCore
         }
         public static string GetLyric(string McMind, string name)
         {
-            string file = Directory.GetCurrentDirectory() + $"/Download/{name}.lrc";
+            string file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory , "Download",name+".lrc");
             if (!File.Exists(file))
             {
                 WebClient c = new WebClient();
