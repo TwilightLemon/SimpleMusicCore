@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using static SimpleMusicCore.HttpHelper;
@@ -33,7 +34,8 @@ namespace SimpleMusicCore
             StreamReader sr = new StreamReader(o.GetResponseStream(), Encoding.UTF8);
             var st = await sr.ReadToEndAsync();
             sr.Dispose();
-            string vk = Text(st, "amobile.music.tc.qq.com/C400000By9MX0yKL2c.m4a", "&fromtag=38", 0);
+            string val = Regex.Match(st, "amobile.music.tc.qq.com/.*?.m4a.*?&fromtag=38").Value;
+            string vk = Text(val, "m4a", "&fromtag=38", 0);
             if (string.IsNullOrEmpty(vk))
             {
                 Console.WriteLine("Vkey被吃掉了!!");
@@ -42,7 +44,7 @@ namespace SimpleMusicCore
                 return await GetVk(mid);
             }
             var mids = JObject.Parse(await GetWebDatacAsync($"https://c.y.qq.com/v8/fcg-bin/fcg_play_single_song.fcg?songmid={mid}&platform=yqq&format=json"))["data"][0]["file"]["media_mid"].ToString();
-            return $"http://musichy.tc.qq.com/amobile.music.tc.qq.com/C400{mids}.m4a" + vk + "&fromtag=98";
+            return $"http://musichy.tc.qq.com/amobile.music.tc.qq.com/M500{mids}.mp3" + vk + "&fromtag=98";
         }
         public static async void GetUri(Music m,bool needlyric)
         {
